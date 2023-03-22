@@ -66,18 +66,14 @@ int parseData(char *inputFileName, int **ppData)
 		fscanf(inFile,"%d\n",&dataSz);
 		printf("dataSz = %d\n", dataSz);
 		*ppData = (int *)malloc(sizeof(int) * dataSz);
-		printf("sizeof(int) * dataSz = %d\n", (sizeof(int) * dataSz));
 		// Implement parse data block
 
 
 		for(int i = 0; i < dataSz; ++i) {
 			printf("for loop fscanf() run %d\n", (i + 1));
-			*ppData[i] = (int)malloc(sizeof(int));
-			printf("successful malloc %d\n", (i + 1));
 			fscanf(inFile, "%d ", ppData[i]);
 			printf("%d\n", *ppData[i]);
 		}
-		fclose(inFile);
 	}
 
 	for(int j = 0; j < dataSz; ++j) {
