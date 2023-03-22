@@ -16,8 +16,20 @@ void mergeSort(int pData[], int l, int r)
 // extraMemoryAllocated counts bytes of memory allocated
 void insertionSort(int* pData, int n)
 {
-	
+    int temp;
+    for(int i = 1; i < n; i++) {  
+        temp = pData[i];
+
+        int j = i - 1;
+        while(j >= 0 && pData[j] > temp) { 
+            pData[j + 1] = pData[j];
+            j--;
+        }
+
+        pData[j+1] = temp; 
+    }
 }
+
 
 // implement bubble sort
 // extraMemoryAllocated counts bytes of extra memory allocated
@@ -40,19 +52,20 @@ void bubbleSort(int* pData, int n)
 // extraMemoryAllocated counts bytes of extra memory allocated
 void selectionSort(int* pData, int n)
 {
-	int minI, temp;
-	for(int i = 0; i < n; ++i) {
-		minI = i;
-		for(int j = i; j < n; ++j) {
-			if(pData[j] < pData[minI]) {
-				minI = j;
-			}
-			temp = pData[i];
-			pData[i] = pData[minI];
-			pData[minI] = temp;
-		}
-	}
+    int minI, temp;
+    for(int i = 0; i < n; ++i) {
+        minI = i;
+        for(int j = i; j < n; ++j) {
+            if(pData[j] < pData[minI]) {
+                minI = j;
+            }
+        }
+        temp = pData[i];
+        pData[i] = pData[minI];
+        pData[minI] = temp;
+    }
 }
+
 
 // parses input file to an integer array
 int parseData(char *inputFileName, int **ppData)
@@ -102,6 +115,8 @@ int main(void)
 	
 	for (i=0;i<3;++i)
 	{
+		printf("%s\n", fileNames[i]);
+
 		int *pDataSrc, *pDataCopy;
 		int dataSz = parseData(fileNames[i], &pDataSrc);
 		
