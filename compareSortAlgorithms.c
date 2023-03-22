@@ -5,11 +5,51 @@
 
 int extraMemoryAllocated;
 
+void merge(int pData[], int l, int m, int r)
+{
+
+	int * tempL = (int *)malloc(sizeof(int) * (m - l + 1));
+	int * tempR = (int *)malloc(sizeof(int) * (r - m));
+
+	for(int i = 0; i < (m - l + 1); ++i) {
+		tempL[i] = pData[l + i];
+	}
+	for(int i = 0; i < (r-m); ++i) {
+		tempR[i] = pData[m + 1 + i];
+	}
+	int j = 0;
+	int k = 0;
+	int tl = l;
+	while (j < (m - l + 1) && k < (r - m)) {
+		if(tempL[j] <= tempR[k]) {
+			pData[tl] = tempL[j];
+			j++;
+		}
+		else {
+			pData[j] = tempR[k];
+			k++;
+		}
+		tl++;
+	}
+	while(k < (r-m)) {
+		pData[tl] = tempR[k];
+		k++;
+		tl++;
+	}
+	free(tempL);
+	free(tempR);
+}
+
 // implement merge sort
 // extraMemoryAllocated counts bytes of extra memory allocated
-void mergeSort(int pData[], int l, int r)
-{
-	
+void mergeSort(int pData[], int l, int r) {
+	if(l < r) {
+		int m = (l+r) / 2;
+		mergeSort(pData, l, m);
+		mergeSort(pData, m+1, r);
+
+		merge(pData, l, m, r);
+	}
 }
 
 // implement insertion sort
