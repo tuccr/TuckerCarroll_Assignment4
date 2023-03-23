@@ -45,10 +45,9 @@ void merge(int pData[], int l, int m, int r)
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r) {
 	if(l < r) {
-		int m = (l+r) / 2;
+		int m = ((l+r) / 2);
 		mergeSort(pData, l, m);
 		mergeSort(pData, m+1, r);
-
 		merge(pData, l, m, r);
 	}
 }
@@ -60,13 +59,11 @@ void insertionSort(int* pData, int n)
     int temp;
     for(int i = 1; i < n; i++) {  
         temp = pData[i];
-
         int j = i - 1;
         while(j >= 0 && pData[j] > temp) { 
             pData[j + 1] = pData[j];
             j--;
         }
-
         pData[j+1] = temp; 
     }
 }
@@ -77,7 +74,6 @@ void insertionSort(int* pData, int n)
 void bubbleSort(int* pData, int n)
 {
 	int temp;
-
 	for(int i = 0; i < (n-1); ++i) {
 		for(int j = 0; j < (n-i-1);++j) {
 			if(pData[j] > pData[j+1]) {
