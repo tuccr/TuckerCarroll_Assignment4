@@ -4,51 +4,54 @@
 #include <string.h>
 
 int extraMemoryAllocated;
-
-void merge(int pData[], int l, int m, int r)
-{
-
-    int * tempL = (int *)malloc(sizeof(int) * (m - l + 1));
-    int * tempR = (int *)malloc(sizeof(int) * (r - m));
-
-    for(int i = 0; i < (m - l + 1); ++i) {
-        tempL[i] = pData[l + i];
-    }
-    for(int i = 0; i < (r-m); ++i) {
-        tempR[i] = pData[m + 1 + i];
-    }
-    int j = 0;
-    int k = 0;
-    int tl = l;
-    while (j < (m - l + 1) && k < (r - m)) {
-        if(tempL[j] <= tempR[k]) {
-            pData[tl] = tempL[j];
-            j++;
-        }
-        else {
-            pData[tl] = tempR[k];
-            k++;
-        }
-        tl++;
-    }
-    while(k < (r-m)) {
-        pData[tl] = tempR[k];
-        k++;
-        tl++;
-    }
-    free(tempL);
-    free(tempR);
-}
-
-
-// implement merge sort
-// extraMemoryAllocated counts bytes of extra memory allocated
+// implement insertion sort
+// extraMemoryAllocated counts bytes of memory allocated
 void mergeSort(int pData[], int l, int r) {
 	if(l < r) {
-		int m = ((l+r) / 2);
-		mergeSort(pData, l, m);
+		int m = ((l + r) / 2);
 		mergeSort(pData, m+1, r);
-		merge(pData, l, m, r);
+		mergeSort(pData, l, m);
+
+		int sizeL = m - l + 1;
+		int sizeR = r - m;
+
+		int * tempL = (int *)malloc(sizeof(int) * sizeL);
+		for(int i = 0; i < (m-l+1); ++i) {
+			tempL[i] = pData[l + i];
+		}
+
+		int * tempR = (int *)malloc(sizeof(int) * sizeR);
+		for(int i = 0; i < (r - m); ++i) {
+			tempR[i] = pData[m + i + 1];
+		}
+
+		int iL = 0;
+		int iR = 0;
+		int k = l;
+		while(iL < sizeL && iR < sizeR) {
+			if(tempL[iL] <= tempR[iR]) {
+				pData[k] = tempL[iL];
+				++iL;
+			}
+			else {
+				pData[k] = tempR[iR];
+				++iR;
+			}
+			++k;
+		}
+	
+		while(iL < sizeL) {
+			pData[k] = tempL[iL];
+			++iL;
+			++k;
+		}
+		while(iR < sizeR) {
+			pData[k] = tempR[iR];
+			++iR;
+			++k;
+		}
+		free(tempL);
+		free(tempR);
 	}
 }
 
@@ -111,9 +114,7 @@ int parseData(char *inputFileName, int **ppData)
 	int dataSz = 0;
 	*ppData = NULL;
 
-	
-	if (inFile)
-	{
+	if (inFile) {
 		fscanf(inFile,"%d\n",&dataSz);
 		*ppData = (int *)malloc(sizeof(int) * dataSz);
 		// Implement parse data block
@@ -152,8 +153,6 @@ int main(void)
 	
 	for (i=0;i<3;++i)
 	{
-		printf("%s\n", fileNames[i]);
-
 		int *pDataSrc, *pDataCopy;
 		int dataSz = parseData(fileNames[i], &pDataSrc);
 		
@@ -170,7 +169,7 @@ int main(void)
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
 		start = clock();
-		selectionSort(pDataCopy, dataSz); //SELECTION SORT
+		selectionSort(pDataCopy, dataSz);
 		end = clock();
 		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
@@ -181,7 +180,7 @@ int main(void)
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
 		start = clock();
-		insertionSort(pDataCopy, dataSz); //INSERTION SORT
+		insertionSort(pDataCopy, dataSz); 
 		end = clock();
 		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
@@ -192,7 +191,7 @@ int main(void)
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
 		start = clock();
-		bubbleSort(pDataCopy, dataSz);  //BUBBLE SORT
+		bubbleSort(pDataCopy, dataSz);  
 		end = clock();
 		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
@@ -203,7 +202,7 @@ int main(void)
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
 		start = clock();
-		mergeSort(pDataCopy, 0, dataSz - 1); //MERGE SORT
+		mergeSort(pDataCopy, 0, dataSz - 1); 
 		end = clock();
 		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
